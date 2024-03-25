@@ -1,9 +1,10 @@
-@echo off
+rem @echo off
 
 SET src=..\godot-4.3.dev
 SET dst=C:\Apps\godot-4.3.dev
 SET ver=4.3.dev
 SET SCRIPT_AES256_ENCRYPTION_KEY=%GODOT_ENCRYPTION_KEY%
+SET threads=6
 
 SET JAVA_HOME=%USERPROFILE%\.jdks\liberica-17.0.10
 SET ANDROID_HOME=%USERPROFILE%\AppData\Local\Android\Sdk
@@ -27,9 +28,9 @@ IF NOT EXIST %src% (
 	exit
 )
 
-scons platform=windows arch=x86_64
-scons platform=windows target=template_release arch=x86_64
-scons platform=android target=template_release arch=arm64v8
+scons -j %threads% platform=windows arch=x86_64
+scons -j %threads% platform=windows target=template_release arch=x86_64
+scons -j %threads% platform=android target=template_release arch=arm64v8
 cd %root%\platform\android\java
 call .\gradlew generateGodotTemplates
 
